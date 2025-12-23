@@ -65,28 +65,39 @@ function showError(message, item) {
 }
 
 function processTransaction(transaction) {
+  validateTransaction(transaction);
+
+  switch (transaction.type) {
+    case "PAYMENT":
+      return processPayment(transaction);
+    case "REFUND":
+      return processRefund(transaction);
+  }
+}
+
+function validateTransaction(transaction) {
   if (!isOpen(transaction)) {
     const error = new Error("Invalid transaction type!");
     error.item = transaction;
     throw error;
   }
-
-  switch (transaction.type) {
-    case "PAYMENT":
-      processPayment(transaction);
-      break;
-    case "REFUND":
-      processRefund(transaction);
-      break;
-    default:
-      const error = new Error("Invalid transaction type!");
-      error.item = transaction;
-      throw error;
+  if (!isPayment(transaction) && !isRefund(transaction)) {
+    const error = new Error("Invalid transaction type!");
+    error.item = transaction;
+    throw error;
   }
 }
 
 function isOpen(transaction) {
   return transaction.status === "OPEN";
+}
+
+function isPayment(transaction) {
+  return transaction.type === "PAYMENT";
+}
+
+function isRefund(transaction) {
+  return transaction.type === "REFUND";
 }
 
 function processPayment(transaction) {
