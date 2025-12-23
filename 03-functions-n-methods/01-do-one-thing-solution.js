@@ -1,15 +1,21 @@
-function createUser(email, password) {
-  const user = {
-    email: email,
-    password: password,
-  };
+class User {
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+  }
 
-  validateInput(user);
-
-  saveUser(user);
+  save() {
+    database.insert(this);
+  }
 }
 
-function validateInput({ email, password }) {
+function createUser(email, password) {
+  validateInput(email, password);
+
+  saveUser(email, password);
+}
+
+function validateInput(email, password) {
   if (isEmailValid(email) && isPasswordValid(password)) {
     throw new Error("Invalid email or password");
   }
@@ -27,6 +33,8 @@ function showError(message) {
   console.log(message);
 }
 
-function saveUser(user) {
-  database.insert(user);
+function saveUser(email, password) {
+  const newUser = new User(email, password);
+
+  newUser.save();
 }
