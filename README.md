@@ -10,6 +10,8 @@ https://github.com/academind/clean-code-course-code/tree/general-resources
 
 ## Avoid "Magic Numbers & Strings"
 
+Based on the exercises in section four of the course:
+
 There's one additional tweak you might want to make to the code.
 
 At the moment, we always check for hard-coded string identifiers like "PAYPAL" or "CREDIT_CARD".
