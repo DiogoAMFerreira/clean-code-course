@@ -45,11 +45,7 @@ function processTransactions(transactions) {
   }
 
   for (const transaction of transactions) {
-    try {
-      processTransaction(transaction);
-    } catch (error) {
-      showError(error.message, error.item);
-    }
+    processTransaction(transaction);
   }
 }
 
@@ -65,13 +61,17 @@ function showError(message, item) {
 }
 
 function processTransaction(transaction) {
-  validateTransaction(transaction);
+  try {
+    validateTransaction(transaction);
 
-  switch (transaction.type) {
-    case "PAYMENT":
-      return processPayment(transaction);
-    case "REFUND":
-      return processRefund(transaction);
+    switch (transaction.type) {
+      case "PAYMENT":
+        return processPayment(transaction);
+      case "REFUND":
+        return processRefund(transaction);
+    }
+  } catch (error) {
+    showError(error.message, error.item);
   }
 }
 
